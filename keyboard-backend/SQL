@@ -1,0 +1,6 @@
+SELECT keyboard.keyboard_id ,keyboard.keyboard_name, switches.switch_name, switches.switch_type, keyboardType.keyboard_type_name
+
+FROM keyboard
+
+LEFT JOIN switches ON switches.switch_id = keyboard.keyboard_switches
+LEFT JOIN keyboardType ON keyboard_type_id = keyboard.keyboard_type

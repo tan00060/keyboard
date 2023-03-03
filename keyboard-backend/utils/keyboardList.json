@@ -1,0 +1,33 @@
+{
+  "keyboards": [
+    { "name": "ALPS PLA Case" },
+    { "name": "Apple Standard Keyboard M0116" },
+    { "name": "Filo 60" },
+    { "name": "Frog Mini" },
+    { "name": "HHKB" },
+    { "name": "KBDFan Tofu 60" },
+    { "name": "KBDFans HHKB Tofu" },
+    { "name": "KBD67 Lite" },
+    { "name": "Leaf 60" },
+    { "name": "Meridian" },
+    { "name": "Monokei Kei" },
+    { "name": "NK65 Milkshake" },
+    { "name": "OEMMAX MCK-860" },
+    { "name": "PLA Alice" },
+    { "name": "PLA Gasket Case" },
+    { "name": "PLA Korn" },
+    { "name": "PLA Neko" },
+    { "name": "PLA Nikujaga" },
+    { "name": "PLA Tofu/Korn" },
+    { "name": "Polaris - White/Black" },
+    { "name": "Polaris - Grey/Brass" },
+    { "name": "Quefrency" },
+    { "name": "Switch Couture Alice" },
+    { "name": "JJW Cloudline" },
+    { "name": "Praxis IM" },
+    { "name": "Bakeneko60" },
+    { "name": "Dactyl Manuform" },
+    { "name": "Filo 60 - Clear Acrylic" },
+    { "name": "Ikki68" }
+  ]
+}
