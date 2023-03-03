@@ -5,7 +5,7 @@ const sql = require("mssql");
 let config = require("../dbconfig");
 
 router.get("/", async function (req, res) {
-  let keyboardTyperQuery = `SELECT * from keyboard_type`;
+  let keyboardTyperQuery = `SELECT * from keyboardType`;
   sql.connect(config, function (err) {
     if (err) {
       res.send({ status: "cannot get keyboard type" });

@@ -8,6 +8,7 @@ const Home: React.FC = () => {
   let naviagate = useNavigate();
 
   const [apiData, setApiData] = useState([]);
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
 
   type apiDataProp = {
     keyboard_id: number;
@@ -21,6 +22,11 @@ const Home: React.FC = () => {
     let data = await getKeyboards();
     if (data) {
       setApiData(data);
+      console.log(data);
+    }
+
+    if (data.code === "ERR_NETWORK") {
+      setErrorMessage(true);
     }
   };
 
@@ -34,13 +40,17 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <div className="keyboardContainer">
-        {apiData.map((apiData: apiDataProp) => (
-          <button onClick={() => keyboardHandler(apiData.keyboard_id)}>
-            {apiData.keyboard_name}
-          </button>
-        ))}
-      </div>
+      {errorMessage ? (
+        <div>No Data</div>
+      ) : (
+        <div className="keyboardContainer">
+          {apiData.map((apiData: apiDataProp) => (
+            <button onClick={() => keyboardHandler(apiData.keyboard_id)}>
+              {apiData.keyboard_name}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

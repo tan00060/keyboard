@@ -26,3 +26,30 @@ export const deleteKeyboardById = async (id?: string) => {
     return err;
   }
 };
+
+export const getSwitches = async () => {
+  try {
+    let res = await axios.get("http://localhost:3000/switches", {});
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const createKeyboard = async (body: object) => {
+  try {
+    let res = await axios.post("http://localhost:3000/keyboard", body);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const getKeyboardType = async () => {
+  try {
+    let res = await axios.get("http://localhost:3000/type", {});
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};

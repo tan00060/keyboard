@@ -18,8 +18,10 @@ router.post("/", async function (req, res) {
       res.status(404);
       return;
     }
-    if (req.body.name) {
-      const keyboardData = `INSERT INTO keyboard (keyboard_name) VALUES ('${req.body.name}')`;
+    console.log(req.body);
+
+    if (req.body) {
+      const keyboardData = `INSERT INTO keyboard (keyboard_name, keyboard_type, keyboard_switches) VALUES ('${req.body.keyboard_name}',${req.body.keyboard_type},${req.body.keyboard_switch})`;
       sql.query(keyboardData, function (err, result) {
         if (err) {
           res.send({ status: "Failed to upload keyboard" });
@@ -29,6 +31,7 @@ router.post("/", async function (req, res) {
         return res.status(201);
       });
     } else {
+      console.log(req);
       res.send({ status: "JSON is incorrect" });
       return res.status(204);
     }

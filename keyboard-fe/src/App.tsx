@@ -4,6 +4,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Home from "./Component/Home/Home";
 import KeyboardInformation from "./Component/KeyboardInformation/KeyboardInformation";
+import CreateKeyboard from "./Component/CreateKeyboard/CreateKeyboard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           path="/keyboard-information/:id"
           element={<KeyboardInformation />}
         />
+        <Route path="/create-keyboard" element={<CreateKeyboard />} />
       </Routes>
     </BrowserRouter>
   );
