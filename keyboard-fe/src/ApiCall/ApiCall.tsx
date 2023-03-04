@@ -71,3 +71,13 @@ export const getKeyboardSwitches = async () => {
     return err;
   }
 };
+
+export const deleteSwitchById = async (id?: string) => {
+  console.log(id);
+  try {
+    let res = await axios.delete(`http://localhost:3000/switches/${id}`, {});
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};

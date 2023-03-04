@@ -61,4 +61,41 @@ router.put("/:id", async function (req, res) {
   });
 });
 
+router.delete("/:id", async function (req, res) {
+  sql.connect(config, function (err) {
+    if (err) {
+      res.send({ status: "failed to connect to the database" });
+      res.status(404);
+      return;
+    }
+
+    if (req.params.id) {
+      console.log(req.params.id);
+      const deleteKeyboardById = `DELETE FROM switches where switch_id = ${req.params.id}`;
+      sql.query(deleteKeyboardById, function (err, result) {
+        if (err) {
+          res.send({ status: `Failed to delete switch ${req.params.id}` });
+          res.status(400);
+          return;
+        }
+
+        if (result.rowsAffected[0] === 0) {
+          res.send({
+            status: `There is no switch with id ${req.params.id} in the database`,
+          });
+          res.status(204);
+          return;
+        }
+
+        res.send({ status: `switch ${req.params.id} has been deleted` });
+        res.status(200);
+        return;
+      });
+    } else {
+      res.send({ status: `Failed to update switch ${req.params.id}` });
+      return res.status(204);
+    }
+  });
+});
+
 module.exports = router;
