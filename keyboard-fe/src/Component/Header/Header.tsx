@@ -39,7 +39,7 @@ const Header = () => {
       </div>
 
       <div className="header-buttonContainer">
-        <Button onClick={handleClick}>Create</Button>
+        <Button onClick={handleClick}>Add Item</Button>
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}

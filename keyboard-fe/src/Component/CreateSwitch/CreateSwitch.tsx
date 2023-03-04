@@ -18,18 +18,18 @@ type switchProp = {
 };
 
 const CreateSwitch = () => {
+  let naviagate = useNavigate();
+
   const [switchType, setSwitchType] = React.useState("");
   const [switchName, setSwitchName] = React.useState("");
   const [requiredSwitchName, setRequiredSwitchName] = useState<boolean>(false);
   const [requiredSwitchType, setRequiredSwitchType] = useState<boolean>(false);
 
   const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
     setSwitchType(event.target.value as string);
   };
 
   const switchNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     setSwitchName(event.target.value);
   };
 
@@ -56,8 +56,7 @@ const CreateSwitch = () => {
     let createSwitch = await createKeyboardSwitch(createObject);
 
     if (createSwitch.status.includes("Created switch")) {
-      console.log(createSwitch);
-      console.log("switch has been created, move to view switches page later");
+      naviagate("/switches");
     }
   };
 

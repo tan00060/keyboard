@@ -62,3 +62,12 @@ export const createKeyboardSwitch = async (body: object) => {
     return err;
   }
 };
+
+export const getKeyboardSwitches = async () => {
+  try {
+    let res = await axios.get("http://localhost:3000/switches", {});
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};

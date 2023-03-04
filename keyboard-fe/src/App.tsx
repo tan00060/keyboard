@@ -7,6 +7,7 @@ import KeyboardInformation from "./Component/KeyboardInformation/KeyboardInforma
 import CreateKeyboard from "./Component/CreateKeyboard/CreateKeyboard";
 import Header from "./Component/Header/Header";
 import CreateSwitch from "./Component/CreateSwitch/CreateSwitch";
+import ViewSwitches from "./Component/ViewSwitches/ViewSwitches";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         />
         <Route path="/create-keyboard" element={<CreateKeyboard />} />
         <Route path="/create-switch" element={<CreateSwitch />} />
+        <Route path="/switches" element={<ViewSwitches />} />
       </Routes>
     </BrowserRouter>
   );
