@@ -19,8 +19,8 @@ router.post("/", async function (req, res) {
       res.status(404);
       return;
     }
-    if (req.body.name) {
-      const keyboardData = `INSERT INTO switches (switch_name, switch_type) VALUES ('${req.body.name}', '${req.body.switchType}')`;
+    if (req.body) {
+      const keyboardData = `INSERT INTO switches (switch_name, switch_type) VALUES ('${req.body.switch_name}', '${req.body.switch_type}')`;
       sql.query(keyboardData, function (err, result) {
         if (err) {
           res.send({ status: "Failed to upload switch" });

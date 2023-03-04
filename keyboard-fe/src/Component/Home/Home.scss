@@ -1,4 +1,10 @@
 .keyboardContainer {
-  display: inline-grid;
-  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  margin: 20px;
+}
+
+.keyboard-btn-style {
+  padding: 10px;
+  margin: 10px;
 }

@@ -45,7 +45,11 @@ const Home: React.FC = () => {
       ) : (
         <div className="keyboardContainer">
           {apiData.map((apiData: apiDataProp) => (
-            <button onClick={() => keyboardHandler(apiData.keyboard_id)}>
+            <button
+              className="keyboard-btn-style"
+              key={apiData.keyboard_id}
+              onClick={() => keyboardHandler(apiData.keyboard_id)}
+            >
               {apiData.keyboard_name}
             </button>
           ))}

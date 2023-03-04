@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
+import { useNavigate } from "react-router";
 import {
   createKeyboard,
   getKeyboardType,
@@ -18,6 +19,8 @@ type keyboardTypeProp = {
 };
 
 const CreateKeyboard = () => {
+  let naviagate = useNavigate();
+
   const [keyboardName, setKeyboardName] = useState("");
   const [keyboardType, setKeyboardType] = useState("");
   const [keyboardSwitches, setKeyboardSwitches] = useState("");
@@ -47,16 +50,15 @@ const CreateKeyboard = () => {
           ? null
           : parseInt(keyboardSwitches.trim()),
     };
-
     if (keyboardObj.keyboard_name.trim() === "") {
       setRequireName(true);
       return;
     }
-
     setRequireName(false);
-
     let createItem = await createKeyboard(keyboardObj);
-    console.log(createItem);
+    if (createItem.status.includes("Created Keyboard")) {
+      naviagate("/");
+    }
   };
 
   const clearButtonHandler = () => {

@@ -53,3 +53,12 @@ export const getKeyboardType = async () => {
     return err;
   }
 };
+
+export const createKeyboardSwitch = async (body: object) => {
+  try {
+    let res = await axios.post("http://localhost:3000/switches", body);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
