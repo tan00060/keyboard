@@ -6,6 +6,7 @@ import {
   getSwitches,
 } from "../../ApiCall/ApiCall";
 import "./CreateKeyboard.scss";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 type switchProp = {
   switch_id: number;
@@ -20,12 +21,11 @@ type keyboardTypeProp = {
 
 const CreateKeyboard = () => {
   let naviagate = useNavigate();
+  let queryClient = useQueryClient();
 
   const [keyboardName, setKeyboardName] = useState("");
   const [keyboardType, setKeyboardType] = useState("");
   const [keyboardSwitches, setKeyboardSwitches] = useState("");
-  const [apiSwitches, setApiSwitches] = useState([]);
-  const [apiType, setApiType] = useState([]);
   const [requireName, setRequireName] = useState(false);
 
   const keyboardNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,18 @@ const CreateKeyboard = () => {
     setKeyboardType(e.target.value);
   };
 
-  const createKeyboardHandler = async () => {
+  const createKeyboardApiCall = useMutation({
+    mutationFn: createKeyboard,
+
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["keyboards"]);
+      if (data.status.includes("Created Keyboard")) {
+        naviagate(`/`);
+      }
+    },
+  });
+
+  const createKeyboardHandler = () => {
     let keyboardObj = {
       keyboard_name: keyboardName.trim(),
       keyboard_type:
@@ -50,15 +61,13 @@ const CreateKeyboard = () => {
           ? null
           : parseInt(keyboardSwitches.trim()),
     };
+
     if (keyboardObj.keyboard_name.trim() === "") {
       setRequireName(true);
       return;
     }
     setRequireName(false);
-    let createItem = await createKeyboard(keyboardObj);
-    if (createItem.status.includes("Created Keyboard")) {
-      naviagate("/");
-    }
+    createKeyboardApiCall.mutate(keyboardObj);
   };
 
   const clearButtonHandler = () => {
@@ -67,24 +76,26 @@ const CreateKeyboard = () => {
     setKeyboardSwitches("");
   };
 
-  const getSwitchFromAPI = async () => {
-    let switchesFromAPI = await getSwitches();
-    if (switchesFromAPI) {
-      setApiSwitches(switchesFromAPI);
-    }
-  };
+  const getSwitchFromAPI = useQuery({
+    queryKey: ["switches"],
+    queryFn: async () => {
+      const data = await getSwitches();
+      return data;
+    },
+  });
 
-  const getKeyboardTypeApi = async () => {
-    let typeApi = await getKeyboardType();
-    if (typeApi) {
-      setApiType(typeApi);
-    }
-  };
+  const getTypeFromApi = useQuery({
+    queryKey: ["types"],
+    queryFn: async () => {
+      const data = await getKeyboardType();
+      return data;
+    },
+  });
 
-  useEffect(() => {
-    getSwitchFromAPI();
-    getKeyboardTypeApi();
-  }, []);
+  if (getSwitchFromAPI.isLoading) return <h1>loading</h1>;
+  if (getSwitchFromAPI.isError) return <h1> error</h1>;
+  if (getTypeFromApi.isLoading) return <h1>loading</h1>;
+  if (getTypeFromApi.isError) return <h1> error</h1>;
 
   return (
     <div className={"createKeyboardContainer"}>
@@ -104,8 +115,8 @@ const CreateKeyboard = () => {
           <select value={keyboardType} onChange={(e) => keyboardTypeHandler(e)}>
             <option value="">Choose here</option>
 
-            {apiType.map((item: keyboardTypeProp) => (
-              <option value={item.keyboard_type_id}>
+            {getTypeFromApi.data.map((item: keyboardTypeProp) => (
+              <option key={item.keyboard_type_id} value={item.keyboard_type_id}>
                 {item.keyboard_type_name}
               </option>
             ))}
@@ -120,8 +131,10 @@ const CreateKeyboard = () => {
           >
             <option value="">Choose here</option>
 
-            {apiSwitches.map((item: switchProp) => (
-              <option value={item.switch_id}>{item.switch_name}</option>
+            {getSwitchFromAPI.data.map((item: switchProp) => (
+              <option key={item.switch_id} value={item.switch_id}>
+                {item.switch_name}
+              </option>
             ))}
           </select>
         </label>

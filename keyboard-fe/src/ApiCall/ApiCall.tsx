@@ -12,8 +12,11 @@ export const getKeyboards = async () => {
 export const getKeyboardById = async (id?: string) => {
   try {
     let res = await axios.get(`http://localhost:3000/keyboard/${id}`, {});
-    return res.data;
+    if (res) {
+      return res.data;
+    }
   } catch (err) {
+    console.log(err);
     return err;
   }
 };

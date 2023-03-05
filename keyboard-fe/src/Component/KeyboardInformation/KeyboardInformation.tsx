@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { deleteKeyboardById, getKeyboardById } from "../../ApiCall/ApiCall";
 import { useNavigate } from "react-router";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 type keyboardProps = {
   keyboard_id: number;
@@ -13,59 +14,54 @@ type keyboardProps = {
 
 const KeyboardInformation = () => {
   let naviagate = useNavigate();
-
+  let queryClient = useQueryClient();
   let { id } = useParams();
 
-  const [singleKeyboardInformation, setSingleKeyboardInformation] =
-    useState<keyboardProps | null>(null);
+  const keyboardIdQueryResults = useQuery({
+    queryKey: ["keyboard", id],
+    enabled: id !== null,
+    queryFn: async () => {
+      const data = await getKeyboardById(id);
+      return data;
+    },
+  });
 
-  //   type singleKeyboardProp = {};
+  const deleteKeyboard = useMutation({
+    mutationFn: deleteKeyboardById,
 
-  const getKeyboardData = async () => {
-    let data = await getKeyboardById(id);
-    if (data) {
-      setSingleKeyboardInformation(data);
-    }
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["keyboards"]);
+      if (data.status.includes("has been deleted")) {
+        naviagate(`/`);
+      }
+    },
+  });
+
+  const deleteKeyboardHandler = (id: string | undefined) => {
+    deleteKeyboard.mutate(id);
   };
 
-  const deleteHandler = async (id: string | undefined) => {
-    let deleteResult = await deleteKeyboardById(id);
-    if (deleteResult.status.includes("has been deleted")) {
-      naviagate(`/`);
-    }
-  };
-
-  useEffect(() => {
-    getKeyboardData();
-  }, []);
-
-  const backHandler = () => {
-    naviagate(`/`);
-  };
+  if (keyboardIdQueryResults.isLoading) return <h1>loading</h1>;
+  if (keyboardIdQueryResults.isError) return <h1> error</h1>;
 
   return (
     <div>
       <div>
-        <p>{singleKeyboardInformation?.keyboard_id}</p>
-        <p>{singleKeyboardInformation?.keyboard_name}</p>
-        <p>{singleKeyboardInformation?.keyboard_type_name}</p>
-        <p>{singleKeyboardInformation?.switch_name}</p>
-        <p>{singleKeyboardInformation?.switch_type}</p>
+        <p>{keyboardIdQueryResults.data?.keyboard_name}</p>
+        <p>{keyboardIdQueryResults.data?.keyboard_type_name}</p>
+        <p>{keyboardIdQueryResults.data?.switch_name}</p>
+        <p>{keyboardIdQueryResults.data?.switch_type}</p>
       </div>
 
-      <div>
-        <button
-          onClick={() =>
-            deleteHandler(singleKeyboardInformation?.keyboard_id.toString())
-          }
-        >
-          delete keyboard
-        </button>
-      </div>
+      {keyboardIdQueryResults.data?.keyboard_name ? (
+        <div>
+          <button onClick={() => deleteKeyboardHandler(id)}>
+            delete keyboard
+          </button>
+        </div>
+      ) : null}
 
-      <div>
-        <button onClick={() => backHandler()}>back</button>
-      </div>
+      <div>{/* <button onClick={() => backHandler()}>back</button> */}</div>
     </div>
   );
 };

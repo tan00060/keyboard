@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import TextField from "@mui/material/TextField";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -10,12 +10,6 @@ import { Grid, Button, FormHelperText } from "@mui/material";
 
 import "./CreateSwitch.scss";
 import { createKeyboardSwitch } from "../../ApiCall/ApiCall";
-
-type switchProp = {
-  switch_id: number;
-  switch_name: string;
-  switch_type: string;
-};
 
 const CreateSwitch = () => {
   let naviagate = useNavigate();
@@ -29,7 +23,7 @@ const CreateSwitch = () => {
     setSwitchType(event.target.value as string);
   };
 
-  const switchNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const switchNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setSwitchName(event.target.value);
   };
 

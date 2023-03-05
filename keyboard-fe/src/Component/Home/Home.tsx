@@ -1,5 +1,4 @@
-import React, { useState, useEffect, MouseEvent } from "react";
-import { keyboard } from "@testing-library/user-event/dist/keyboard";
+import React, { useState, useEffect } from "react";
 import { getKeyboards } from "../../ApiCall/ApiCall";
 import { useNavigate } from "react-router";
 import "./Home.scss";
@@ -12,11 +11,10 @@ import {
   Button,
 } from "@mui/material";
 
+import { useQuery, useMutation } from "react-query";
+
 const Home: React.FC = () => {
   let naviagate = useNavigate();
-
-  const [apiData, setApiData] = useState([]);
-  const [errorMessage, setErrorMessage] = useState<boolean>(false);
 
   type apiDataProp = {
     keyboard_id: number;
@@ -26,27 +24,20 @@ const Home: React.FC = () => {
     keyboard_type: string;
   };
 
-  const getKeyboardData = async () => {
-    let data = await getKeyboards();
-    if (data) {
-      setApiData(data);
-    }
+  const getKeyboardResults = useQuery({
+    queryKey: ["keyboards"],
+    queryFn: () => getKeyboards(),
+  });
 
-    if (data.code === "ERR_NETWORK") {
-      setErrorMessage(true);
-    }
-  };
+  if (getKeyboardResults.isLoading) return <h1>loading</h1>;
+  if (getKeyboardResults.isError) return <h1> error</h1>;
 
   const keyboardHandler = (value: number) => {
     naviagate(`/keyboard-information/${value}`);
   };
 
-  useEffect(() => {
-    getKeyboardData();
-  }, []);
-
   let gridContainer = (keyboard: apiDataProp) => (
-    <Grid item xs={16} md={6} lg={4} xl={3}>
+    <Grid item xs={16} md={6} lg={4} xl={3} key={keyboard.keyboard_id}>
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Typography
@@ -72,15 +63,13 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      {errorMessage ? (
-        <div>No Data</div>
-      ) : (
-        <div className="keyboardContainer">
-          <Grid container spacing={{ xs: 2, md: 3 }}>
-            {apiData.map((apiData: apiDataProp) => gridContainer(apiData))}
-          </Grid>
-        </div>
-      )}
+      <div className="keyboardContainer">
+        <Grid container spacing={{ xs: 2, md: 3 }}>
+          {getKeyboardResults.data.map((apiData: apiDataProp) =>
+            gridContainer(apiData)
+          )}
+        </Grid>
+      </div>
     </div>
   );
 };

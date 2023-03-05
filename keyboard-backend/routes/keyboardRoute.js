@@ -60,21 +60,22 @@ router.get("/:id", async function (req, res) {
       sql.query(getKeyboardById, function (err, result) {
         if (err) {
           console.log(err);
+          res.status(404);
           res.send({
             status: `Can not find keyboard with the ID of ${req.params.id}`,
           });
-          res.status(400);
         }
 
         if (result.rowsAffected[0] === 0) {
+          res.status(404);
           res.send({
             status: `There is no keyboard with the ID of ${req.params.id}`,
           });
-          return 204;
+          return;
         }
 
-        res.send(result?.recordset[0]);
         res.status(200);
+        res.send(result?.recordset[0]);
         return;
       });
     } else {

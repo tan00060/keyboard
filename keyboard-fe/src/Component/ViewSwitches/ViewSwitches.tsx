@@ -13,6 +13,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { deleteSwitchById, getKeyboardSwitches } from "../../ApiCall/ApiCall";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 type switchType = {
   switch_id: number;
@@ -21,21 +22,14 @@ type switchType = {
 };
 
 const ViewSwitches = () => {
-  const [switches, setSwitches] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [currentSwitch, setCurrentSwitch] = useState<number | null>(null);
+  let queryClient = useQueryClient();
 
-  const getSwitchesFromApi = async () => {
-    let getSwitches = await getKeyboardSwitches();
-
-    if (getSwitches) {
-      setSwitches(getSwitches);
-    }
-  };
-
-  useEffect(() => {
-    getSwitchesFromApi();
-  }, []);
+  const switchesQueryResults = useQuery({
+    queryKey: ["switches"],
+    queryFn: () => getKeyboardSwitches(),
+  });
 
   const handleClickOpen = (switchId: number) => {
     setCurrentSwitch(switchId);
@@ -47,20 +41,20 @@ const ViewSwitches = () => {
     setOpen(false);
   };
 
-  const deleteSwitchHandler = async () => {
-    //delete on the DB
-    let deleteSwitchResult = await deleteSwitchById(currentSwitch?.toString());
-    console.log(deleteSwitchResult);
-
-    if (deleteSwitchResult.status.includes("has been deleted")) {
-      //delete locally for new
-      let newSwitchList = switches.filter(
-        (item: switchType) => item.switch_id !== currentSwitch
-      );
+  const deleteKeyboardSwitch = useMutation({
+    mutationFn: deleteSwitchById,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["switches"]);
       setOpen(false);
-      setSwitches(newSwitchList);
-    }
+    },
+  });
+
+  const deleteSwitchHandler = async () => {
+    deleteKeyboardSwitch.mutate(currentSwitch?.toString());
   };
+
+  if (switchesQueryResults.isLoading) return <h1>loading</h1>;
+  if (switchesQueryResults.isError) return <h1> error</h1>;
 
   return (
     <div>
@@ -73,9 +67,9 @@ const ViewSwitches = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {switches.map((item: switchType) => (
+          {switchesQueryResults.data.map((item: switchType) => (
             <TableRow
-              key={item.switch_name}
+              key={item.switch_id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
