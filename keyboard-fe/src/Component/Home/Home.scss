@@ -1,7 +1,5 @@
 .keyboardContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  margin: 20px;
+  padding: 10px;
 }
 
 .keyboard-btn-style {

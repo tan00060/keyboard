@@ -3,6 +3,14 @@ import { keyboard } from "@testing-library/user-event/dist/keyboard";
 import { getKeyboards } from "../../ApiCall/ApiCall";
 import { useNavigate } from "react-router";
 import "./Home.scss";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Grid,
+  Button,
+} from "@mui/material";
 
 const Home: React.FC = () => {
   let naviagate = useNavigate();
@@ -22,7 +30,6 @@ const Home: React.FC = () => {
     let data = await getKeyboards();
     if (data) {
       setApiData(data);
-      console.log(data);
     }
 
     if (data.code === "ERR_NETWORK") {
@@ -38,21 +45,40 @@ const Home: React.FC = () => {
     getKeyboardData();
   }, []);
 
+  let gridContainer = (keyboard: apiDataProp) => (
+    <Grid item xs={16} md={6} lg={4} xl={3}>
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Typography
+            sx={{ fontSize: 14 }}
+            color="text.secondary"
+            gutterBottom
+          ></Typography>
+          <Typography variant="h5" component="div">
+            {keyboard.keyboard_name}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            size="small"
+            onClick={() => keyboardHandler(keyboard.keyboard_id)}
+          >
+            Learn More
+          </Button>
+        </CardActions>
+      </Card>
+    </Grid>
+  );
+
   return (
     <div>
       {errorMessage ? (
         <div>No Data</div>
       ) : (
         <div className="keyboardContainer">
-          {apiData.map((apiData: apiDataProp) => (
-            <button
-              className="keyboard-btn-style"
-              key={apiData.keyboard_id}
-              onClick={() => keyboardHandler(apiData.keyboard_id)}
-            >
-              {apiData.keyboard_name}
-            </button>
-          ))}
+          <Grid container spacing={{ xs: 2, md: 3 }}>
+            {apiData.map((apiData: apiDataProp) => gridContainer(apiData))}
+          </Grid>
         </div>
       )}
     </div>

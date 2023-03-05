@@ -10,7 +10,10 @@ const Header = () => {
   let naviagate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
+
   const open = Boolean(anchorEl);
+  const open2 = Boolean(anchorEl2);
 
   const createKeyboardHandler = () => {
     naviagate("/create-keyboard");
@@ -32,13 +35,43 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const handleViewClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl2(event.currentTarget);
+  };
+
+  const handleViewClose = () => {
+    setAnchorEl2(null);
+  };
+
+  const viewSwitchesHandler = () => {
+    naviagate("/switches");
+  };
+
+  const viewKeyboardHandler = () => {
+    naviagate("/");
+  };
+
   return (
     <div className="header-container">
       <div onClick={titleHandler} className="header-title">
-        Keyboards and Stuff
+        <h1>Keyboards and Stuff</h1>
       </div>
 
       <div className="header-buttonContainer">
+        <Button onClick={handleViewClick}>View Items</Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl2}
+          open={open2}
+          onClose={handleViewClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={viewKeyboardHandler}>View Keyboards</MenuItem>
+          <MenuItem onClick={viewSwitchesHandler}>View Switches</MenuItem>
+        </Menu>
+
         <Button onClick={handleClick}>Add Item</Button>
         <Menu
           id="basic-menu"

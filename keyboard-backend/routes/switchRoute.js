@@ -70,7 +70,6 @@ router.delete("/:id", async function (req, res) {
     }
 
     if (req.params.id) {
-      console.log(req.params.id);
       const deleteKeyboardById = `DELETE FROM switches where switch_id = ${req.params.id}`;
       sql.query(deleteKeyboardById, function (err, result) {
         if (err) {
