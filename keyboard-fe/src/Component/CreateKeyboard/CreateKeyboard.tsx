@@ -119,7 +119,7 @@ const CreateKeyboard = () => {
     <div>
       <div className="createKeyboardInputContainers">
         <Box>
-          <Grid spacing={1} columns={16}>
+          <Grid container spacing={1} columns={16}>
             <Grid item xs={8}>
               <TextField
                 value={keyboardName}

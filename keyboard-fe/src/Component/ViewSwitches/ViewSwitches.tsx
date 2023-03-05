@@ -58,7 +58,12 @@ const ViewSwitches = () => {
 
   return (
     <div>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table
+        style={{ background: "white", margin: "auto", width: "90%" }}
+        size="small"
+        sx={{ minWidth: 650 }}
+        aria-label="simple table"
+      >
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>

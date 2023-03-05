@@ -82,3 +82,21 @@ export const deleteSwitchById = async (id?: string) => {
     return err;
   }
 };
+
+export const editKeyboardsById = async (value: any) => {
+  let newKeyboardData = {
+    keyboard_name: value.keyboard_name,
+    keyboard_type_id: value.keyboard_type_id,
+    keyboard_switches: value.keyboard_switches,
+  };
+
+  try {
+    let res = await axios.put(
+      `http://localhost:3000/keyboard/${value.keyboard_id}`,
+      newKeyboardData
+    );
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};

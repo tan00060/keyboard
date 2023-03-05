@@ -3,6 +3,15 @@ import { useParams } from "react-router-dom";
 import { deleteKeyboardById, getKeyboardById } from "../../ApiCall/ApiCall";
 import { useNavigate } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
+import EditKeyboardModal from "../EditKeyboardModal/EditKeyboardModal";
 
 type keyboardProps = {
   keyboard_id: number;
@@ -37,6 +46,10 @@ const KeyboardInformation = () => {
     },
   });
 
+  const backHandler = () => {
+    naviagate(`/`);
+  };
+
   const deleteKeyboardHandler = (id: string | undefined) => {
     deleteKeyboard.mutate(id);
   };
@@ -46,22 +59,33 @@ const KeyboardInformation = () => {
 
   return (
     <div>
-      <div>
-        <p>{keyboardIdQueryResults.data?.keyboard_name}</p>
-        <p>{keyboardIdQueryResults.data?.keyboard_type_name}</p>
-        <p>{keyboardIdQueryResults.data?.switch_name}</p>
-        <p>{keyboardIdQueryResults.data?.switch_type}</p>
-      </div>
-
-      {keyboardIdQueryResults.data?.keyboard_name ? (
-        <div>
-          <button onClick={() => deleteKeyboardHandler(id)}>
-            delete keyboard
-          </button>
-        </div>
-      ) : null}
-
-      <div>{/* <button onClick={() => backHandler()}>back</button> */}</div>
+      <Card style={{ margin: "auto" }} sx={{ maxWidth: "90%" }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {keyboardIdQueryResults.data.keyboard_name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {keyboardIdQueryResults.data.keyboard_type_name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {keyboardIdQueryResults.data.switch_name}
+          </Typography>{" "}
+          <Typography variant="body2" color="text.secondary">
+            {keyboardIdQueryResults.data.switch_type}
+          </Typography>
+        </CardContent>
+        <CardActions style={{ justifyContent: "right" }}>
+          {keyboardIdQueryResults.data?.keyboard_name ? (
+            <Button onClick={() => deleteKeyboardHandler(id)} size="small">
+              Delete
+            </Button>
+          ) : null}
+          <EditKeyboardModal keyboard={keyboardIdQueryResults.data} />
+          <Button onClick={() => backHandler()} size="small">
+            Back
+          </Button>
+        </CardActions>
+      </Card>
     </div>
   );
 };
