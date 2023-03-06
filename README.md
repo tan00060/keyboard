@@ -43,7 +43,7 @@
 
 - Following this [guide](https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server?view=sql-server-ver16) to set up microsoft sql on your local machine to create your database.
 
-- Open SQLQuery2.sql on your local machine, and run the table commands localed in SQLTables
+- Open SQLQuery2.sql on your local machine, and run the table commands located in utils/SQLTables
 
 ![alt text](./Pictures//Create-Table.PNG)
 
