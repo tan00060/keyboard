@@ -89,7 +89,7 @@ const CreateKeyboard = () => {
     setRequireType(false);
     setRequireSwitch(false);
 
-    // createKeyboardApiCall.mutate(keyboardObj);
+    createKeyboardApiCall.mutate(keyboardObj);
   };
   //#endregion
 

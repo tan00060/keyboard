@@ -32,6 +32,10 @@ const Home: React.FC = () => {
   if (getKeyboardResults.isLoading) return <h1>loading</h1>;
   if (getKeyboardResults.isError) return <h1> error</h1>;
 
+  if (getKeyboardResults.data?.length === 0) {
+    naviagate(`/create-keyboard`);
+  }
+
   const keyboardHandler = (value: number) => {
     naviagate(`/keyboard-information/${value}`);
   };
