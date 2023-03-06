@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import {
   createKeyboard,
@@ -40,6 +40,8 @@ const CreateKeyboard = () => {
   const [keyboardType, setKeyboardType] = useState("");
   const [keyboardSwitches, setKeyboardSwitches] = useState("");
   const [requireName, setRequireName] = useState(false);
+  const [requireSwitch, setRequireSwitch] = useState(false);
+  const [requireType, setRequireType] = useState(false);
 
   //#region handlers
   const keyboardNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,20 +65,31 @@ const CreateKeyboard = () => {
   const createKeyboardHandler = () => {
     let keyboardObj = {
       keyboard_name: keyboardName.trim(),
-      keyboard_type:
-        keyboardType.trim() === "" ? null : parseInt(keyboardType.trim()),
-      keyboard_switch:
-        keyboardSwitches.trim() === ""
-          ? null
-          : parseInt(keyboardSwitches.trim()),
+      keyboard_type: parseInt(keyboardType.trim()),
+      keyboard_switch: parseInt(keyboardSwitches.trim()),
     };
 
+    console.log(keyboardObj);
     if (keyboardObj.keyboard_name.trim() === "") {
       setRequireName(true);
       return;
     }
+
+    if (Number.isNaN(keyboardObj.keyboard_switch)) {
+      setRequireSwitch(true);
+      return;
+    }
+
+    if (Number.isNaN(keyboardObj.keyboard_type)) {
+      setRequireType(true);
+      return;
+    }
+
     setRequireName(false);
-    createKeyboardApiCall.mutate(keyboardObj);
+    setRequireType(false);
+    setRequireSwitch(false);
+
+    // createKeyboardApiCall.mutate(keyboardObj);
   };
   //#endregion
 
@@ -122,8 +135,8 @@ const CreateKeyboard = () => {
           <Grid container spacing={1} columns={16}>
             <Grid item xs={8}>
               <TextField
+                error={requireName}
                 value={keyboardName}
-                required
                 id="outlined-basic"
                 label="Keyboard name"
                 variant="outlined"
@@ -139,6 +152,7 @@ const CreateKeyboard = () => {
               <FormControl fullWidth>
                 <InputLabel>Keyboard Type</InputLabel>
                 <Select
+                  error={requireType}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={keyboardType}
@@ -147,7 +161,10 @@ const CreateKeyboard = () => {
                 >
                   {getTypeFromApi.data.map((item: keyboardTypeProp) => {
                     return (
-                      <MenuItem value={item.keyboard_type_id.toString()}>
+                      <MenuItem
+                        key={item.keyboard_type_id}
+                        value={item.keyboard_type_id.toString()}
+                      >
                         {item.keyboard_type_name}
                       </MenuItem>
                     );
@@ -163,6 +180,7 @@ const CreateKeyboard = () => {
               <FormControl fullWidth>
                 <InputLabel>Switches</InputLabel>
                 <Select
+                  error={requireSwitch}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={keyboardSwitches}
@@ -171,7 +189,10 @@ const CreateKeyboard = () => {
                 >
                   {getSwitchFromAPI.data.map((item: switchProp) => {
                     return (
-                      <MenuItem value={item.switch_id.toString()}>
+                      <MenuItem
+                        key={item.switch_id}
+                        value={item.switch_id.toString()}
+                      >
                         {item.switch_name}
                       </MenuItem>
                     );

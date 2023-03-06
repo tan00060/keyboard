@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { deleteKeyboardById, getKeyboardById } from "../../ApiCall/ApiCall";
 import { useNavigate } from "react-router";
@@ -8,18 +8,9 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardMedia,
   Typography,
 } from "@mui/material";
 import EditKeyboardModal from "../EditKeyboardModal/EditKeyboardModal";
-
-type keyboardProps = {
-  keyboard_id: number;
-  keyboard_name: string;
-  keyboard_type_name: string;
-  switch_name: string;
-  switch_type: string;
-};
 
 const KeyboardInformation = () => {
   let naviagate = useNavigate();

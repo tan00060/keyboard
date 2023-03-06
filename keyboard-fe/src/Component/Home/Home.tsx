@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { getKeyboards } from "../../ApiCall/ApiCall";
 import { useNavigate } from "react-router";
 import "./Home.scss";
@@ -11,7 +11,7 @@ import {
   Button,
 } from "@mui/material";
 
-import { useQuery, useMutation } from "react-query";
+import { useQuery } from "react-query";
 
 const Home: React.FC = () => {
   let naviagate = useNavigate();
