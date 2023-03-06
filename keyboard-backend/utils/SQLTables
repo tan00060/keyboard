@@ -1,0 +1,35 @@
+-- create keyboard table
+CREATE TABLE keyboard (
+        keyboard_id INT PRIMARY KEY IDENTITY,
+        keyboard_name varchar(100),
+        keyboard_switches varchar(100),
+        keyboard_type varchar(100),
+        keyboard_keycaps varchar(100)
+)
+
+-- create switch table
+CREATE TABLE switches (
+        switch_id INT PRIMARY KEY IDENTITY,
+        switch_name varchar(100),
+        switch_type varchar(100),
+)
+
+-- create type table
+CREATE TABLE keyboard (
+        keyboard_type_id INT PRIMARY KEY IDENTITY,
+        keyboard_type_name varchar(100),
+)
+
+
+-- create keycap table
+CREATE TABLE keycaps (
+        keycap_id INT PRIMARY KEY IDENTITY,
+        keycap_name varchar(100),
+        keycap_type varchar(100),
+)
+
+-- create keycap table
+CREATE TABLE keycapType (
+        keycap_id INT PRIMARY KEY IDENTITY,
+        keycap_type_name varchar(100),
+)
